@@ -32,5 +32,4 @@ public class User {
         this.password = password;
     }
 
-    // І так далі для решти полів
 }
