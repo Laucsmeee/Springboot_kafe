@@ -12,13 +12,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
+                .csrf(csrf -> csrf.disable()) // вимикаємо CSRF для REST API
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/register", "/users/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(httpBasic -> {});
+                .httpBasic(httpBasic -> {}); // або можна повністю прибрати .httpBasic()
 
         return http.build();
     }
