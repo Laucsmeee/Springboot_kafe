@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-import com.example.demo.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;

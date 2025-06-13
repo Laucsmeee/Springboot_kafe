@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "users")
@@ -10,29 +11,44 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    private String username;
+    private String email;
 
     private String password;
-
     private String birthdate;
     private String phone;
+    private String fullName;
     private String qrCode;
     private int bonusPoints;
+    private boolean isComplete;
+    private Instant createdAt;
 
-    // геттери і сеттери (можу не повторювати тут)
-    // ...
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
     public String getBirthdate() { return birthdate; }
     public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
+
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
     public String getQrCode() { return qrCode; }
     public void setQrCode(String qrCode) { this.qrCode = qrCode; }
+
     public int getBonusPoints() { return bonusPoints; }
     public void setBonusPoints(int bonusPoints) { this.bonusPoints = bonusPoints; }
+
+    public boolean isComplete() { return isComplete; }
+    public void setIsComplete(boolean isComplete) { this.isComplete = isComplete; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }
