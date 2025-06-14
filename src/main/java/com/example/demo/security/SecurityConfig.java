@@ -20,12 +20,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/register-step1", "/users/register-step2", "/users/login").permitAll()
+                        .requestMatchers(
+                                "/users/register-step1",
+                                "/users/register-step2",
+                                "/users/login",
+                                "/menuitems/**"  // Дозволяємо доступ до меню без авторизації
+                        ).permitAll()
                         .anyRequest().authenticated()
                 );
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
