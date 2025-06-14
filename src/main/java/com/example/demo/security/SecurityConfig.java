@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,14 +25,16 @@ public class SecurityConfig {
                                 "/users/register-step1",
                                 "/users/register-step2",
                                 "/users/login",
-                                "/menuitems/grouped"  // Дозволяємо доступ до меню без авторизації
+                                "/menuitems/grouped",
+                                "/api/users/info",
+                                "/api/orders"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()  // <- важливо!
                         .anyRequest().authenticated()
                 );
 
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

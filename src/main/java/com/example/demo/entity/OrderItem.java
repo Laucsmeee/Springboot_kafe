@@ -11,24 +11,24 @@ public class OrderItem {
     private Long orderItemId;
 
     @Column(nullable = false)
-    private Long itemId;
-
-    @Column(nullable = false)
     private Integer quantity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id", nullable = false)
+    private MenuItem menuItem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    // === Геттери та Сеттери ===
     public Long getOrderItemId() { return orderItemId; }
     public void setOrderItemId(Long orderItemId) { this.orderItemId = orderItemId; }
 
-    public Long getItemId() { return itemId; }
-    public void setItemId(Long itemId) { this.itemId = itemId; }
-
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
+
+    public MenuItem getMenuItem() { return menuItem; }
+    public void setMenuItem(MenuItem menuItem) { this.menuItem = menuItem; }
 
     public Order getOrder() { return order; }
     public void setOrder(Order order) { this.order = order; }

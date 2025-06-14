@@ -26,18 +26,14 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
         Optional<OrderDTO> orderOpt = orderService.getOrder(id);
-        return orderOpt
-                .map(ResponseEntity::ok)
+        return orderOpt.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Новий GET endpoint для пошуку замовлень по userId
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderDTO>> getOrdersByUser(@PathVariable Long userId) {
         List<OrderDTO> orders = orderService.getOrdersByUserId(userId);
-        if (orders.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if (orders.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(orders);
     }
 }

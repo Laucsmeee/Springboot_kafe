@@ -2,14 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.OrderItemDTO;
-import com.example.demo.entity.Order;
-import com.example.demo.entity.OrderItem;
-import com.example.demo.repository.OrderRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +16,9 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+
     public OrderDTO createOrder(OrderDTO dto) {
         Order order = new Order();
         order.setUserId(dto.getUserId());
@@ -25,29 +26,26 @@ public class OrderService {
         order.setTotalPrice(dto.getTotalPrice());
 
         List<OrderItem> items = dto.getItems().stream().map(itemDto -> {
+            MenuItem menuItem = menuItemRepository.findById(itemDto.getItemId())
+                    .orElseThrow(() -> new RuntimeException("MenuItem not found: " + itemDto.getItemId()));
             OrderItem item = new OrderItem();
-            item.setItemId(itemDto.getItemId());
+            item.setMenuItem(menuItem);
             item.setQuantity(itemDto.getQuantity());
             item.setOrder(order);
             return item;
         }).collect(Collectors.toList());
 
         order.setItems(items);
-
         Order saved = orderRepository.save(order);
-
         return convertToDTO(saved);
     }
 
     public Optional<OrderDTO> getOrder(Long id) {
-        Optional<Order> orderOpt = orderRepository.findById(id);
-        return orderOpt.map(this::convertToDTO);
+        return orderRepository.findById(id).map(this::convertToDTO);
     }
 
-    // Новий метод: отримати список замовлень користувача
     public List<OrderDTO> getOrdersByUserId(Long userId) {
-        List<Order> orders = orderRepository.findByUserId(userId);
-        return orders.stream()
+        return orderRepository.findByUserId(userId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -60,7 +58,7 @@ public class OrderService {
 
         List<OrderItemDTO> itemsDto = order.getItems().stream().map(item -> {
             OrderItemDTO i = new OrderItemDTO();
-            i.setItemId(item.getItemId());
+            i.setItemName(item.getMenuItem().getName());
             i.setQuantity(item.getQuantity());
             return i;
         }).collect(Collectors.toList());
