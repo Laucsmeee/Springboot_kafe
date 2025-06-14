@@ -72,6 +72,45 @@ public class UserController {
 
         return ResponseEntity.ok(new UserResponse(user.getEmail(), user.getQrCode(), user.getBonusPoints()));
     }
+    @GetMapping("/info")
+    public ResponseEntity<?> getUserInfo(@RequestParam String email) {
+        Optional<User> userOptional = userRepo.findByEmail(email);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        User user = userOptional.get();
+        // Повертаємо DTO з потрібними полями
+        UserInfoResponse info = new UserInfoResponse(
+                user.getId(),
+                user.getFullName(),
+                user.getBirthdate(),
+                user.getPhone(),
+                user.getBonusPoints()
+        );
+        return ResponseEntity.ok(info);
+    }
+
+    public static class UserInfoResponse {
+        private Long id;
+        private String fullName;
+        private String birthdate;
+        private String phone;
+        private int bonusPoints;
+
+        public UserInfoResponse(Long id, String fullName, String birthdate, String phone, int bonusPoints) {
+            this.id = id;
+            this.fullName = fullName;
+            this.birthdate = birthdate;
+            this.phone = phone;
+            this.bonusPoints = bonusPoints;
+        }
+
+        public Long getId() { return id; }
+        public String getFullName() { return fullName; }
+        public String getBirthdate() { return birthdate; }
+        public String getPhone() { return phone; }
+        public int getBonusPoints() { return bonusPoints; }
+    }
 
     @PutMapping("/bonus")
     public ResponseEntity<String> updateBonusPoints(@RequestBody BonusUpdateRequest request) {
