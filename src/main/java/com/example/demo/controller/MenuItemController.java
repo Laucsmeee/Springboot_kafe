@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/menuitems")
-public class MenuItemController {
+public class    MenuItemController {
 
     private final MenuItemService menuItemService;
 

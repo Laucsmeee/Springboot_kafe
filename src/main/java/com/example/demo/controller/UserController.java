@@ -79,7 +79,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         User user = userOptional.get();
-        // Повертаємо DTO з потрібними полями
+
         UserInfoResponse info = new UserInfoResponse(
                 user.getId(),
                 user.getFullName(),
