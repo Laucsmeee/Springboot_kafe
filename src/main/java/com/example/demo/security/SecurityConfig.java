@@ -32,7 +32,8 @@ public class SecurityConfig {
                                 "/users/login",
                                 "/menuitems/grouped",
                                 "/api/users/info",
-                                "/users/info"
+                                "/users/info",
+                                "/user/*"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
