@@ -23,7 +23,7 @@ public class MenuItem {
     @JoinColumn(name = "subcategory_id")
     private SubCategory subCategory;
 
-    // Getters & Setters...
+    // Getters and setters
 
     public Long getItemsId() { return itemsId; }
     public void setItemsId(Long itemsId) { this.itemsId = itemsId; }

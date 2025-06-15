@@ -2,8 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.MenuItemShortDTO;
 import com.example.demo.entity.MenuItem;
-import com.example.demo.service.MenuItemService;
 import com.example.demo.repository.MenuItemRepository;
+import com.example.demo.service.MenuItemService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +40,20 @@ public class MenuItemServiceImpl implements MenuItemService {
                         )
                 )
         );
+    }
+
+    @Override
+    public MenuItemShortDTO createMenuItem(MenuItemShortDTO dto) {
+        MenuItem menuItem = new MenuItem();
+        menuItem.setName(dto.getName());
+        menuItem.setDescription(dto.getDescription());
+        menuItem.setPrice(dto.getPrice());
+        menuItem.setPhotoUrl(dto.getPhotoUrl());
+        // category і subCategory можна додати тут, якщо потрібно
+
+        menuItem = menuItemRepo.save(menuItem);
+
+        dto.setId(menuItem.getItemsId());
+        return dto;
     }
 }

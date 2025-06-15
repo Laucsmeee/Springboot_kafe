@@ -6,4 +6,5 @@ import java.util.Map;
 
 public interface MenuItemService {
     Map<String, Map<String, List<MenuItemShortDTO>>> getGroupedMenuItems();
+    MenuItemShortDTO createMenuItem(MenuItemShortDTO dto);
 }
