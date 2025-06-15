@@ -31,7 +31,7 @@ public class SecurityConfig {
                                 "/users/register-step2",
                                 "/users/login",
                                 "/api/menuitems/grouped",
-                                "/api/users/info"
+                                "/users/info"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
