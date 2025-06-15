@@ -24,13 +24,6 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
-        Optional<OrderDTO> orderOpt = orderService.getOrder(id);
-        return orderOpt.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderDTO>> getOrdersByUser(@PathVariable Long userId) {
         List<OrderDTO> orders = orderService.getOrdersByUserId(userId);

@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/menuitems")
-public class    MenuItemController {
+@RequestMapping("/api/menuitems")
+@CrossOrigin(origins = "*")
+public class MenuItemController {
 
     private final MenuItemService menuItemService;
 
@@ -19,7 +20,14 @@ public class    MenuItemController {
     }
 
     @GetMapping("/grouped")
-    public ResponseEntity<Map<String, Map<String, List<MenuItemShortDTO>>>> getGroupedItems() {
-        return ResponseEntity.ok(menuItemService.getGroupedMenuItems());
+    public ResponseEntity<Map<String, Map<String, List<MenuItemShortDTO>>>> getGroupedMenuItems() {
+        Map<String, Map<String, List<MenuItemShortDTO>>> grouped = menuItemService.getGroupedMenuItems();
+        return ResponseEntity.ok(grouped);
+    }
+
+    @PostMapping
+    public ResponseEntity<MenuItemShortDTO> createMenuItem(@RequestBody MenuItemShortDTO dto) {
+        MenuItemShortDTO created = menuItemService.createMenuItem(dto);
+        return ResponseEntity.ok(created);
     }
 }
