@@ -4,6 +4,7 @@ import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.OrderItemDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class OrderService {
 
     @Autowired
     private MenuItemRepository menuItemRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public OrderDTO createOrder(OrderDTO dto) {
         Order order = new Order();
@@ -48,6 +52,19 @@ public class OrderService {
         return orderRepository.findByUserId(userId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    // 🔥 Реалізація пошуку по email
+    public List<OrderDTO> getOrdersByUserEmail(String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) return Collections.emptyList();
+        Long userId = userOpt.get().getId();
+        return getOrdersByUserId(userId);
+    }
+
+    public boolean emailExists(String email) {
+        List<OrderDTO> orders = getOrdersByUserEmail(email);
+        return !orders.isEmpty();
     }
 
     private OrderDTO convertToDTO(Order order) {

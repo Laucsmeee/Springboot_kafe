@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @RestController
 @RequestMapping("/users")
@@ -70,8 +73,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
         }
 
-        return ResponseEntity.ok(new UserResponse(user.getEmail(), user.getQrCode(), user.getBonusPoints()));
+        return ResponseEntity.ok(new UserResponse(user.getEmail(), user.getBonusPoints()));
     }
+
     @GetMapping("/info")
     public ResponseEntity<?> getUserInfo(@RequestParam String email) {
         Optional<User> userOptional = userRepo.findByEmail(email);
@@ -88,28 +92,6 @@ public class UserController {
                 user.getBonusPoints()
         );
         return ResponseEntity.ok(info);
-    }
-
-    public static class UserInfoResponse {
-        private Long id;
-        private String fullName;
-        private String birthdate;
-        private String phone;
-        private int bonusPoints;
-
-        public UserInfoResponse(Long id, String fullName, String birthdate, String phone, int bonusPoints) {
-            this.id = id;
-            this.fullName = fullName;
-            this.birthdate = birthdate;
-            this.phone = phone;
-            this.bonusPoints = bonusPoints;
-        }
-
-        public Long getId() { return id; }
-        public String getFullName() { return fullName; }
-        public String getBirthdate() { return birthdate; }
-        public String getPhone() { return phone; }
-        public int getBonusPoints() { return bonusPoints; }
     }
 
     @PutMapping("/bonus")
@@ -133,19 +115,41 @@ public class UserController {
                 .forEach(userRepo::delete);
     }
 
-    public static class UserResponse {
-        private String  email;
-        private String qrCode;
-        private int bonusPoints;
 
-        public UserResponse(String email, String qrCode, int bonusPoints) {
+    public static class UserResponse {
+        @JsonProperty("email")
+        private final String email;
+        @JsonProperty("bonusPoints")
+        private final int bonusPoints;
+
+        public UserResponse(String email, int bonusPoints) {
             this.email = email;
-            this.qrCode = qrCode;
             this.bonusPoints = bonusPoints;
         }
 
         public String getEmail() { return email; }
-        public String getQrCode() { return qrCode; }
+        public int getBonusPoints() { return bonusPoints; }
+    }
+
+    public static class UserInfoResponse {
+        private Long id;
+        private String fullName;
+        private String birthdate;
+        private String phone;
+        private int bonusPoints;
+
+        public UserInfoResponse(Long id, String fullName, String birthdate, String phone, int bonusPoints) {
+            this.id = id;
+            this.fullName = fullName;
+            this.birthdate = birthdate;
+            this.phone = phone;
+            this.bonusPoints = bonusPoints;
+        }
+
+        public Long getId() { return id; }
+        public String getFullName() { return fullName; }
+        public String getBirthdate() { return birthdate; }
+        public String getPhone() { return phone; }
         public int getBonusPoints() { return bonusPoints; }
     }
 

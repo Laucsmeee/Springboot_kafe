@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.EmailDTO;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,23 @@ public class OrderController {
         List<OrderDTO> orders = orderService.getOrdersByUserId(userId);
         if (orders.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<List<OrderDTO>> getOrdersByEmail(@PathVariable String email) {
+        List<OrderDTO> orders = orderService.getOrdersByUserEmail(email);
+        if (orders.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(orders);
+    }
+
+    // ✅ Перевірка наявності email
+    @PostMapping("/check-email")
+    public ResponseEntity<String> checkIfEmailExists(@RequestBody EmailDTO emailDTO) {
+        boolean exists = orderService.emailExists(emailDTO.getEmail());
+        if (exists) {
+            return ResponseEntity.ok("User with email exists.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with email not found.");
+        }
     }
 }

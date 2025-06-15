@@ -17,7 +17,6 @@ public class User {
     private String birthdate;
     private String phone;
     private String fullName;
-    private String qrCode;
     private int bonusPoints;
     private boolean isComplete;
     private Instant createdAt;
@@ -39,9 +38,6 @@ public class User {
 
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
-
-    public String getQrCode() { return qrCode; }
-    public void setQrCode(String qrCode) { this.qrCode = qrCode; }
 
     public int getBonusPoints() { return bonusPoints; }
     public void setBonusPoints(int bonusPoints) { this.bonusPoints = bonusPoints; }
