@@ -30,7 +30,7 @@ public class SecurityConfig {
                                 "/users/register-step1",
                                 "/users/register-step2",
                                 "/users/login",
-                                "/menuitems/grouped",
+                                "/api/menuitems/grouped",
                                 "/api/users/info"
                         ).permitAll()
                         .anyRequest().authenticated()
